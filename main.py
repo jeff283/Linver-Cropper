@@ -62,14 +62,29 @@ def main():
 
     for root, dirs, files in os.walk(image_dir):
         for file in files:
-            if file.endswith('png') or file.endswith('jpg'):
+            if file.endswith('png') or file.endswith('jpg') or file.endswith('jpeg'):
+
+                retain = file
+                retPath = os.path.join(root, retain)
+                change = file.split(".")
+                change[0] = "image"
+                file = ".".join((change[0], change[-1]))
+
                 path = os.path.join(root, file)
-                new_path = os.path.join(new_dir, file)
+                os.rename(retPath, path)
+
+
+
+                # new_path = os.path.join(new_dir, file)
                 # print(path)
                 try:
                     img = croper(path, (x, y))
+                    os.rename(path, retPath)
+                    new_path = os.path.join(new_dir, retain)
+
+
                     cv.imwrite(new_path, img)
-                    print(f"{file} Cropped")
+                    print(f"{retain} Cropped")
                     cropped += 1
                     # print("".join((file)))
                 except:
